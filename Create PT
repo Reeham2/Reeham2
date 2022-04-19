@@ -1,0 +1,129 @@
+var finalList = ["Thank you for shopping with us !", "I hope this beverage treats you well ! ", "There are many beverages that can help you acquire a healthy diet !", "Enjoy !", "Thank You !"];
+var total = 0;
+var weightLoss = 0;
+var weightGain = 0;
+var milkshake = 0;
+var index = 0;
+
+//onEvent for recommendation button
+// takes user to screen with recommendations 
+//based of user selction
+onEvent("Recommendation", "click", function( ) {
+  setScreen("screen2");
+// The images used in this screen came from:
+// [1] image 1 - https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/img-2984-1544045336.jpg
+// [2] image 2 - https://images.cookforyourlife.org/wp-content/uploads/2018/08/shutterstock_406826704.jpg
+// [3] image 3 - https://yogaofcooking.co/wp-content/uploads/2020/07/oreo-milkshake-4-1040x1536.jpg
+// The information found in the first paragraph came from
+//https://www.healthline.com/nutrition/are-smoothies-good-for-you
+//The information found in the second paragraph came from
+//https://theinfinitekitchen.com/guide/what-smoothies-are-good-for-weight-gain/
+});
+
+//onEvent for "buy some now" button
+// takes user to screen with selections 
+//user can buy smoothies with calculated total
+onEvent("buy", "click", function( ) {
+setScreen("screen3");
+});
+
+//onEvent for restart button
+// takes user to home screen  
+onEvent("restart", "click", function( ) {
+setScreen("home");
+restart();
+});
+
+//onEvent for restart button
+// resets all numbers on the screen   
+onEvent("image1", "click", function( ) {
+restart();
+});
+
+//onEvent for weight loss selection
+// increases amount of weight loss smoothies
+onEvent("loss", "click", function( ) {
+ losses();
+});
+
+//onEvent for weight gain selection
+//increases amount of weight gain smoothies
+onEvent("gain", "click", function( ) {
+  Gains();
+});
+
+//onEvent for milkshake selection
+// increases amount of milkshakes
+onEvent("milkshake", "click", function( ) {
+  tasty();
+});
+
+// function to add up total for weightloss smoothies
+// weightloss - increases smoothie numbers wanted
+// return losses - returns amount selected 
+function losses() {
+   weightLoss = weightLoss + 1;
+  setProperty("Ls", "text", "" + weightLoss); 
+  return losses;
+}
+
+// function to add up total for weightGain smoothies
+// weightGain - increases smoothie numbers wanted
+// return Gains - returns amount selected 
+function Gains() {
+    weightGain = weightGain + 1;
+  setProperty("Gs", "text", "" + weightGain);
+  return Gains;
+}
+
+// function to add up total for milkshake
+// milkshake - increases smoothie numbers wanted
+// return tasty - returns amount selected 
+function tasty() {
+   milkshake = milkshake + 1;
+  setProperty("Ts", "text", "" + milkshake);
+  return tasty;
+}
+
+// function restarts all numbers 
+// restart just restarts everything in the app
+// return tasty - returnes all the values the original 
+function restart() {
+total = 0;
+weightLoss = 0;
+weightGain = 0;
+milkshake = 0;
+setNumber("Ls", 0);
+setNumber("Gs", 0);
+setNumber("Ts", 0);
+setText("totalText", "$0");
+setText("kind","Kind of Smoothie..." );
+setText("reason","Health Purpose...");
+
+}
+
+//onEvent for total button
+// calculates users final price after smoothie selection 
+//user enters the amount -  total is returned
+onEvent("total", "click", function( ) {
+  totalCalc();
+  final();
+});
+
+// function is for calculating price
+// total - adds the amount of smoothies * price
+// return totalcalc - returns the total cost
+function totalCalc() {
+  var price = 4.99;
+for (var i = 0; i < 4; i++) {
+ if (weightGain > 0 || weightLoss > 0 || milkshake > 0) {
+   total = weightGain * price + weightLoss * price + milkshake * price;
+ }
+  }
+  setText("totalText", "$" + total);
+  return totalCalc;
+}
+function final() {
+  index = randomNumber(0, finalList.length - 1);
+  setText("final", finalList[index]);
+}
